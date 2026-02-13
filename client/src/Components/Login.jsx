@@ -7,11 +7,13 @@ import {
     Paper,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 const base_url = import.meta.env.VITE_API_BASE_URL
 
 
 const Login = () => {
+
+    const navigate = useNavigate();
     const [loginData, setloginData] = useState({
         email: "",
         password: ""
@@ -47,6 +49,7 @@ const Login = () => {
             if (success) {
                 toast.success(message);
                 localStorage.setItem('Tokens',createToken)
+                navigate('/')
             } else if (error) {
                 toast.error(error?.details[0].message);
             } else if (!success) {
