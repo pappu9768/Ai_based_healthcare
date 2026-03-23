@@ -5,6 +5,7 @@ import Login from './Components/Login'
 import { ToastContainer } from 'react-toastify'
 import MainDashboard from './Components/MainDashboard'
 import DiagnosisForm from './Components/DiagnosisForm'
+import AskAi from './Components/AskAi'
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path='/login' element={<Login />} />
 
         <Route path='/start' element={<DiagnosisForm/>}/>
+        <Route path='/askai' element={<AskAi/>}/>
       </Routes>
 
       <ToastContainer position='top-right' />

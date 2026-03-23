@@ -5,11 +5,37 @@ import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
 
   const navigate = useNavigate();
   const tokens = localStorage.getItem('Tokens');
+  const [usersName, setUsersName] = useState('')
+
+  useEffect(() => {
+    const getUsername = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/name', {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `${tokens}`
+          }
+        })
+        const result = await res.json()
+        setUsersName(result.userName)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    if (tokens) {
+      getUsername()
+    }
+
+  }, [tokens])
 
   const handleLogin = () => {
     navigate('/login')
@@ -28,16 +54,24 @@ const Navbar = () => {
     <Box mb={5}>
       <AppBar sx={{ mb: 2 }}>
         <Toolbar>
-          <MedicalServicesIcon sx={{ mr: 1 }} />
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+
+          <Typography variant="h6" sx={{ flexGrow: 1 }} onClick={(() => navigate('/'))}>
+            <MedicalServicesIcon sx={{ mr: 1 }} />
             AI Healthcare Diagnosis System
           </Typography>
           <Typography variant="body1">
             {
               tokens ? (
                 <>
-                  
-                  <button onClick={handleLogout}>Logout</button>
+                  <Box sx={{
+                    display:'flex',
+                    alignItems:'center',
+                    justifyContent:'space-between',
+                    
+                  }}>
+                    <Typography variant='h5' sx={{mr: 3}}>welcome, {usersName}</Typography>
+                    <button onClick={handleLogout}>Logout</button>
+                  </Box>
                 </>
               ) : (
                 <>

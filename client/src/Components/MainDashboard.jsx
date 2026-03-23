@@ -15,18 +15,18 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import HistoryIcon from "@mui/icons-material/History";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import Navbar from "./Navbar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MainDashboard = () => {
 
   const navigate = useNavigate()
-  const handleDiagnose = () => {
-    navigate('/start');
+  const handleChat = () => {
+    navigate('/askai');
   }
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "#f4f6f8" }}>
 
-      <Navbar/>
+      <Navbar />
 
       {/* Hero Section */}
       <Box sx={{ py: 6, backgroundColor: "#1976d2", color: "#fff" }}>
@@ -55,14 +55,14 @@ const MainDashboard = () => {
                 <Typography variant="body2" color="text.secondary">
                   Enter symptoms and get AI-based disease predictions.
                 </Typography>
-                <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={handleDiagnose}>
+                <Button fullWidth variant="contained" sx={{ mt: 2 }}>
                   Diagnose
                 </Button>
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          {/* <Grid item xs={12} md={3}>
             <Card sx={{ height: "100%" }}>
               <CardContent>
                 <UploadFileIcon fontSize="large" color="primary" />
@@ -77,8 +77,27 @@ const MainDashboard = () => {
                 </Button>
               </CardContent>
             </Card>
+          </Grid> */}
+
+            {/* Ai chat  */}
+          <Grid item xs={12} md={3}>
+            <Card sx={{ height: "100%" }}>
+              <CardContent>
+                <SmartToyIcon fontSize="large" color="primary" />
+                <Typography variant="h6" mt={2}>
+                  AI Health Assistant
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Chat with AI for health-related guidance.
+                </Typography>
+                <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={handleChat}>
+                  Chat Now
+                </Button>
+              </CardContent>
+            </Card>
           </Grid>
 
+            {/* diagnose history  */}
           <Grid item xs={12} md={3}>
             <Card sx={{ height: "100%" }}>
               <CardContent>
@@ -96,22 +115,7 @@ const MainDashboard = () => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={3}>
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                <SmartToyIcon fontSize="large" color="primary" />
-                <Typography variant="h6" mt={2}>
-                  AI Health Assistant
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Chat with AI for health-related guidance.
-                </Typography>
-                <Button fullWidth variant="contained" sx={{ mt: 2 }}>
-                  Chat Now
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
+
 
         </Grid>
       </Container>
@@ -121,16 +125,7 @@ const MainDashboard = () => {
         <Container>
           <Grid container spacing={2} textAlign="center">
             <Grid item xs={12} md={4}>
-              <Typography variant="h6">95% Accuracy</Typography>
-              <Typography variant="body2">AI Diagnosis Rate</Typography>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6">50+ Diseases</Typography>
-              <Typography variant="body2">Supported</Typography>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6">Secure Data</Typography>
-              <Typography variant="body2">HIPAA Compliant</Typography>
+              <Typography>we are here always for you</Typography>
             </Grid>
           </Grid>
         </Container>

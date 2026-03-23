@@ -5,6 +5,10 @@ import {
     TextField,
     Typography,
     Paper,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -19,17 +23,29 @@ const Register = () => {
         name: "",
         email: "",
         password: ""
+        // confirmPassword:""
     });
+    const [role, setRole] = useState('')
+    const [speciality, setSpeciality] = useState('')
+    const [experience, setExperience] = useState('')
+    const [fee, setFee] = useState('')
+    const [num, setNum] = useState('')
+
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+
         // console.log(base_url);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
-
+        // console.log(formData);
+        // console.log(role, speciality, experience, fee, num)
+        // if(formData.password !== formData.confirmPassword){
+        //     toast.error("Passwords do not match")
+        //     return;
+        // }
         try {
             const url = `${base_url}/register`;
             const res = await fetch(url, {
@@ -40,7 +56,12 @@ const Register = () => {
                 body: JSON.stringify({
                     name: formData.name,
                     email: formData.email,
-                    password: formData.password
+                    password: formData.password,
+                    role: role,
+                    speciality: speciality,
+                    experience: experience,
+                    consultationFee: fee,
+                    emergencyNumber: num
                 })
             })
 
@@ -75,7 +96,7 @@ const Register = () => {
             <Paper
                 elevation={10}
                 sx={{
-                    width: 380,
+                    width: { xs: "95%", md: role === 'DOCTOR' ? 750 : 380 },
                     p: 4,
                     borderRadius: 4,
                     backdropFilter: "blur(10px)"
@@ -100,42 +121,139 @@ const Register = () => {
                 </Typography>
 
                 <Box component="form" onSubmit={handleSubmit}>
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        label="Full Name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: { xs: 'column', md: 'row' },
+                            gap: 4
 
-                    />
+                        }}
+                    >
+                        <Box sx={{ flex: 1 }}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Full Name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
 
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        label="Email Address"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
+                            />
 
-                    />
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Email Address"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
 
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        label="Password"
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
+                            />
 
-                    />
 
+
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Password"
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+
+                            />
+
+                            {/* <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Confirm Password"
+                                type="password"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+
+                            /> */}
+
+                            <FormControl fullWidth sx={{
+                                marginBottom: "12px"
+                            }}>
+                                <InputLabel>Role</InputLabel>
+                                <Select
+                                    value={role}
+                                    label="Role"
+                                    onChange={(e) => setRole(e.target.value)}
+                                >
+                                    <MenuItem value="PATIENT">Patient</MenuItem>
+                                    <MenuItem value="DOCTOR">Doctor</MenuItem>
+                                </Select>
+                            </FormControl>
+
+                        </Box>
+                        {/* {
+                            role === "DOCTOR" && (
+                                <Box sx={{ flex: 1 }}>
+
+                                    <Typography variant="subtitle1" fontWeight="bold" mb={2}>
+                                        Doctor Details
+                                    </Typography>
+
+                                    <FormControl fullWidth sx={{ mb: 2 }}>
+                                        <InputLabel>Speciality</InputLabel>
+                                        <Select
+                                            value={speciality}
+                                            label="Speciality"
+                                            onChange={(e) => setSpeciality(e.target.value)}
+                                        >
+                                            <MenuItem value="General Physician">General Physician</MenuItem>
+                                            <MenuItem value="Cardiologist">Cardiologist</MenuItem>
+                                            <MenuItem value="Dermatologist ">Dermatologist</MenuItem>
+                                            <MenuItem value="Pediatrican">Pediatrican</MenuItem>
+                                            <MenuItem value="Neurologist">Neurologist</MenuItem>
+                                            <MenuItem value="Othropedic">Othropedic</MenuItem>
+                                            <MenuItem value="Gynecologist">Gynecologist</MenuItem>
+                                        </Select>
+                                    </FormControl>
+
+                                    <TextField
+                                        fullWidth
+                                        label="Experience(yrs)"
+                                        type="number"
+                                        sx={{ mb: 2 }}
+                                        value={experience}
+                                        onChange={(e) => setExperience(e.target.value)}
+                                    />
+
+                                    <TextField
+                                        fullWidth
+                                        label="Consultation Fees"
+                                        type="number"
+                                        sx={{ mb: 2 }}
+                                        value={fee}
+                                        onChange={(e) => setFee(e.target.value)}
+                                    />
+
+                                    <TextField
+                                        fullWidth
+                                        label="Emergency Number"
+                                        type="number"
+                                        value={num}
+                                        onChange={(e) => setNum(e.target.value)}
+                                    />
+
+
+
+                                </Box>
+                            )
+                        } */}
+
+
+
+                    </Box>
                     <Button
                         type="submit"
                         fullWidth
                         sx={{
-                            mt: 3,
+                            mt: 4,
                             py: 1.2,
                             borderRadius: 3,
                             textTransform: "none",
@@ -152,6 +270,7 @@ const Register = () => {
                         Register
                     </Button>
                 </Box>
+
 
                 <Typography
                     variant="body2"
