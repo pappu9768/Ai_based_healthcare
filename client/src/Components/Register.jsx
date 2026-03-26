@@ -23,13 +23,12 @@ const Register = () => {
         name: "",
         email: "",
         password: ""
-        // confirmPassword:""
     });
     const [role, setRole] = useState('')
     const [speciality, setSpeciality] = useState('')
     const [experience, setExperience] = useState('')
-    const [fee, setFee] = useState('')
-    const [num, setNum] = useState('')
+    
+    const [liNum, setLiNum] = useState('')
 
 
     const handleChange = (e) => {
@@ -46,6 +45,10 @@ const Register = () => {
         //     toast.error("Passwords do not match")
         //     return;
         // }
+        console.log(speciality,liNum,experience)
+        // setSpeciality("")
+        // setLiNum("")
+        // setExperience("")
         try {
             const url = `${base_url}/register`;
             const res = await fetch(url, {
@@ -58,10 +61,9 @@ const Register = () => {
                     email: formData.email,
                     password: formData.password,
                     role: role,
-                    speciality: speciality,
+                    specialization: speciality,
                     experience: experience,
-                    consultationFee: fee,
-                    emergencyNumber: num
+                    licenseNumber: liNum
                 })
             })
 
@@ -163,16 +165,7 @@ const Register = () => {
 
                             />
 
-                            {/* <TextField
-                                fullWidth
-                                margin="normal"
-                                label="Confirm Password"
-                                type="password"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-
-                            /> */}
+                           
 
                             <FormControl fullWidth sx={{
                                 marginBottom: "12px"
@@ -189,62 +182,40 @@ const Register = () => {
                             </FormControl>
 
                         </Box>
-                        {/* {
-                            role === "DOCTOR" && (
-                                <Box sx={{ flex: 1 }}>
 
-                                    <Typography variant="subtitle1" fontWeight="bold" mb={2}>
-                                        Doctor Details
-                                    </Typography>
+                        <Box>
+                            {
+                                role === "DOCTOR" && (
+                                <>
+                                <TextField
+                                    fullWidth
+                                    margin="normal"
+                                    type="specialization"
+                                    label="specialization"
+                                    value={speciality}
+                                    onChange={(e) => setSpeciality(e.target.value)}
+                                />
+                                <TextField
+                                    fullWidth
+                                    margin="normal"
+                                    type="experience"
+                                    label="experience(in yrs)"
+                                    value={experience}
+                                    onChange={(e) => setExperience(e.target.value)}
+                                />
+                                <TextField
+                                    fullWidth
+                                    margin="normal"
+                                    type="liNum"
+                                    label="License No."
+                                    value={liNum}
+                                    onChange={(e) => setLiNum(e.target.value)}
+                                />
 
-                                    <FormControl fullWidth sx={{ mb: 2 }}>
-                                        <InputLabel>Speciality</InputLabel>
-                                        <Select
-                                            value={speciality}
-                                            label="Speciality"
-                                            onChange={(e) => setSpeciality(e.target.value)}
-                                        >
-                                            <MenuItem value="General Physician">General Physician</MenuItem>
-                                            <MenuItem value="Cardiologist">Cardiologist</MenuItem>
-                                            <MenuItem value="Dermatologist ">Dermatologist</MenuItem>
-                                            <MenuItem value="Pediatrican">Pediatrican</MenuItem>
-                                            <MenuItem value="Neurologist">Neurologist</MenuItem>
-                                            <MenuItem value="Othropedic">Othropedic</MenuItem>
-                                            <MenuItem value="Gynecologist">Gynecologist</MenuItem>
-                                        </Select>
-                                    </FormControl>
-
-                                    <TextField
-                                        fullWidth
-                                        label="Experience(yrs)"
-                                        type="number"
-                                        sx={{ mb: 2 }}
-                                        value={experience}
-                                        onChange={(e) => setExperience(e.target.value)}
-                                    />
-
-                                    <TextField
-                                        fullWidth
-                                        label="Consultation Fees"
-                                        type="number"
-                                        sx={{ mb: 2 }}
-                                        value={fee}
-                                        onChange={(e) => setFee(e.target.value)}
-                                    />
-
-                                    <TextField
-                                        fullWidth
-                                        label="Emergency Number"
-                                        type="number"
-                                        value={num}
-                                        onChange={(e) => setNum(e.target.value)}
-                                    />
-
-
-
-                                </Box>
-                            )
-                        } */}
+                                </>)
+                            }
+                        </Box>
+                       
 
 
 

@@ -1,15 +1,16 @@
 import express from 'express';
-import { loginUserAuth, registerUserAuth } from '../middleware/userAuthentication.js';
+
 import { register, login, checkToken } from '../controllers/user.controller.js';
 import { tokenCheck } from '../middleware/tokenCheck.js';
-import { diagnosePatient } from '../controllers/diagnose.controller.js';
+import { deleteAllChats, diagnosePatient, getConversation } from '../controllers/diagnose.controller.js';
 const router = express.Router();
 
 router.post('/register', register);
-router.post('/login', loginUserAuth, login)
+router.post('/login', login);
 
 
-router.get('/check', tokenCheck, checkToken)
+router.get('/check', tokenCheck, checkToken);
 router.post('/diagnose', tokenCheck,diagnosePatient);
-
+router.get('/history',tokenCheck,getConversation);
+router.delete('/history',tokenCheck,deleteAllChats);
 export default router;

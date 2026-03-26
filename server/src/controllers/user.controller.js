@@ -1,19 +1,46 @@
 import registerModel from '../models/user.model.js'
 import bcrypt from 'bcrypt'
 import JWT from 'jsonwebtoken'
-import { doctorProfileModel } from '../models/docter.model.js';
+
 
 
 export const register = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password, role,specialization,experience,licenseNumber } = req.body;
 
-        // if (!name || !email || !password || !role) {
-        //     return res.status(400).json({
-        //         message: "All fields are required",
-        //         success: false
-        //     })
-        // }
+        if (!name) {
+            return res.status(400).json({
+                message: "name is required",
+                success: false
+            })
+        }
+        
+        if (!email || !email.includes("@")) {
+            return res.status(400).json({
+                message: " only valid email is accepted",
+                success: false
+            })
+        }
+        
+
+        if(!password){
+            return res.status(400).json({
+                message:"password is required",
+                success:false
+            })
+        }
+        if(password.length < 6 ){
+            return res.status(400).json({
+                message:"password length should be always greater then 6",
+                success:false
+            })
+        }
+        if (!role) {
+            return res.status(400).json({
+                message: "role is required",
+                success: false
+            })
+        }
 
         const user = await registerModel.findOne({
             email
@@ -25,40 +52,43 @@ export const register = async (req, res) => {
                 success: false
             })
         }
+        // if doctor is registering
+        if (role === "DOCTOR") {
+            if (!specialization || !experience || !licenseNumber) {
+                return res.status(400).json({
+                    message: "All doctor fields are required",
+                    success: false
+                });
+            }
+        }
 
         const hashPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await registerModel.create({
+        // create user object 
+        const newUser = {
             name,
             email,
             password: hashPassword,
             role
-        })
+        }
 
         //create doctor profile if role is selected as DOCTOR
-        if (role === 'DOCTOR') {
+        // if(role === "DOCTOR"){
+        //     newUser.specialization = specialization,
+        //     newUser.experience = experience,
+        //     newUser.licenseNumber = licenseNumber,
+        //     newUser.status = "PENDING"
+        // } 
 
-            // if (!specialty || !experience) {
-            //     return res.status(404).json({
-            //         message: "For doctors, specialty & experience is required",
-            //         success: false
-            //     })
-            // }
+        const createUser = await registerModel.create(newUser)
 
-            await doctorProfileModel.create({
-                user: newUser._id,
-                specialty,
-                consultationFee,
-                experience
-            })
-        }
 
 
 
         return res.status(201).json({
-            message: "Registered!!",
+            message: "Registration successfull",
             success: true,
-            newUser
+            createUser
         })
 
     } catch (error) {
@@ -72,7 +102,20 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body;
+
+        if(!password){
+            return res.status(400).json({
+                message:"password is required",
+                success:false
+            })
+        }
+        if(password.length < 6 ){
+            return res.status(400).json({
+                message:"password length should be always greater then 6",
+                success:false
+            })
+        }
 
         const user = await registerModel.findOne({
 
@@ -81,7 +124,7 @@ export const login = async (req, res) => {
 
         if (!user) {
             return res.status(400).json({
-                message: "user not exist",
+                message: "user with this email is not exist",
                 success: false
             })
         }
