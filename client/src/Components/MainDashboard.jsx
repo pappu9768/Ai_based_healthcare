@@ -16,6 +16,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 
 const MainDashboard = () => {
   const tokenCheck = localStorage.getItem('Tokens')
@@ -31,6 +32,10 @@ const MainDashboard = () => {
 
   const handleHistory = () => {
     navigate('/history')
+  }
+
+  const handleAppointment = () =>{
+    navigate('/book')
   }
 
   return (
@@ -158,13 +163,56 @@ const MainDashboard = () => {
                       </Button>
 
 
-                    </>) : (<>
-                      <Button fullWidth variant="contained">
-                        Login first
-                      </Button>
-                    </>)
+                    </>) : (
+                      <>
+                        <Button fullWidth variant="contained">
+                          Login first
+                        </Button>
+                      </>
+                    )
 
                   }
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Appointment Booking */}
+          <Grid item xs={12} md={4}>
+            <Card
+              sx={{
+                height: "100%",
+                borderRadius: 4,
+                boxShadow: 3,
+                transition: "0.3s",
+                '&:hover': { transform: "translateY(-8px)" }
+              }}
+            >
+              <CardContent>
+                <Stack spacing={2} alignItems="center">
+                  <EventAvailableIcon fontSize="large" color="primary" />
+                  <Typography variant="h6">Book Appointment</Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    textAlign="center"
+                  >
+                    Schedule an appointment with certified doctors.
+                  </Typography>
+
+                  {tokenCheck ? (
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={handleAppointment}
+                    >
+                      Book Now
+                    </Button>
+                  ) : (
+                    <Button fullWidth variant="contained">
+                      Login first
+                    </Button>
+                  )}
                 </Stack>
               </CardContent>
             </Card>

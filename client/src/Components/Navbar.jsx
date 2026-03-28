@@ -12,6 +12,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const tokens = localStorage.getItem('Tokens');
   const [usersName, setUsersName] = useState('')
+  const [role, setRole] = useState('')
 
   useEffect(() => {
     const getUsername = async () => {
@@ -25,6 +26,7 @@ const Navbar = () => {
         })
         const result = await res.json()
         setUsersName(result.userName)
+        setRole(result.role)
 
       } catch (error) {
         console.log(error)
@@ -69,7 +71,11 @@ const Navbar = () => {
                     justifyContent:'space-between',
                     
                   }}>
-                    <Typography variant='h5' sx={{mr: 3}}>welcome, {usersName}</Typography>
+                    <Typography variant='h5' sx={{mr: 3}}>
+                      {
+                        role === "DOCTOR" ? <span>Hello,Dr.{usersName}</span> : <span>Welcome,{usersName}</span>
+                      }
+                    </Typography>
                     <button onClick={handleLogout}>Logout</button>
                   </Box>
                 </>

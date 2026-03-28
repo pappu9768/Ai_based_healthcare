@@ -29,9 +29,11 @@ app.use('/api/v1/auth', router);
 app.get('/name',tokenCheck,async(req,res) => {
     try {
         const userName = req.name;
+        const role = req.role
         return res.status(200).json({
             msg:"name",
-            userName
+            userName,
+            role
         })
     } catch (error) {
         return res.status(400).json({

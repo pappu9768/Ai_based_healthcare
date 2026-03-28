@@ -9,6 +9,8 @@ import AskAi from './Components/AskAi'
 import ResfreshHandler from './ResfreshHandler'
 import { Navigate } from 'react-router-dom'
 import History from './Components/History'
+import BookAppointment from './Components/BookAppointment'
+import DoctorInfo from './Components/DoctorInfo'
 
 
 const App = () => {
@@ -22,12 +24,15 @@ const App = () => {
 
       <ResfreshHandler setAuthenticated={setAuthenticated} />
       <Routes>
+        <Route path='/' element={<Navigate to="/login"/>}/>
         <Route path='/main' element={<MainDashboard />} />
 
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
 
-        <Route path='/history' element={<History/>}/>
+        <Route path='/history' element={<PrivateRoute>
+          <History/>
+        </PrivateRoute>}/>
 
         <Route path='/diagnose' element={<PrivateRoute>
           <DiagnosisForm />
@@ -35,6 +40,9 @@ const App = () => {
         <Route path='/askai' element={<PrivateRoute>
           <AskAi />
         </PrivateRoute>} />
+
+        <Route path='/book' element = {<BookAppointment/>}/>
+        <Route path='/info' element = {<DoctorInfo/>}/>
       </Routes>
 
       <ToastContainer position='top-right' />

@@ -60,10 +60,10 @@ const Register = () => {
                     name: formData.name,
                     email: formData.email,
                     password: formData.password,
-                    role: role,
-                    specialization: speciality,
-                    experience: experience,
-                    licenseNumber: liNum
+                    role: role
+                    // specialization: speciality,
+                    // experience: experience,
+                    // licenseNumber: liNum
                 })
             })
 
@@ -98,7 +98,7 @@ const Register = () => {
             <Paper
                 elevation={10}
                 sx={{
-                    width: { xs: "95%", md: role === 'DOCTOR' ? 750 : 380 },
+                    width: 380,//{ xs: "95%", md: role === 'DOCTOR' ? 750 : 380 },
                     p: 4,
                     borderRadius: 4,
                     backdropFilter: "blur(10px)"
@@ -183,7 +183,7 @@ const Register = () => {
 
                         </Box>
 
-                        <Box>
+                        {/* <Box>
                             {
                                 role === "DOCTOR" && (
                                 <>
@@ -214,7 +214,7 @@ const Register = () => {
 
                                 </>)
                             }
-                        </Box>
+                        </Box> */}
                        
 
 
