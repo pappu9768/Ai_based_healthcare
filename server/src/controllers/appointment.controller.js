@@ -10,7 +10,7 @@ export const createAppointment = async (req, res) => {
         const doctorId = req.params.id;
 
         //only pateint can create appointment
-        if (req.role !== "patient") {
+        if (req.role !== "PATIENT") {
             return res.status(403).json({
                 message: "Only patients can create appointments",
                 success: false
@@ -20,7 +20,7 @@ export const createAppointment = async (req, res) => {
         //doctor is exist or not
         const doctor = await userModel.findById(doctorId);
 
-        if (!doctorId || doctor.role !== "doctor") {
+        if (!doctorId || doctor.role !== "DOCTOR") {
             return res.status(400).json({ message: 'doctor not found', success: false })
         }
 
@@ -66,14 +66,14 @@ export const getAllAppointmnet = async (req, res) => {
             return res.status(400).json({ message: 'user not found', success: false })
         }
         
-        if (req.role !== "patient") {
+        if (req.role !== "DOCTOR") {
             return res.status(403).json({
-                message: "Only patients can create appointments",
+                message: "Only doctors are access to appointments",
                 success: false
             });
         }
 
-        const getAll = await appointmentModel.find({ patient: userId })
+        const getAll = await appointmentModel.find({ doctor: userId })
 
         return res.status(201).json({
             message: "all appointmnet",
@@ -97,7 +97,7 @@ export const updateStatus = async (req, res) => {
 
         const userId = req.id
 
-        if (req.role !== "doctor") {
+        if (req.role !== "DOCTOR") {
             return res.status(403).json({
                 message: "Only doctors are allowed to update status",
                 success: false

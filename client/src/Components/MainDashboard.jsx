@@ -17,8 +17,17 @@ import SmartToyIcon from "@mui/icons-material/SmartToy";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import EditIcon from '@mui/icons-material/Edit';
 
+import { useContext } from "react";
+import { newContext } from "../ContextApi/context.js";
 const MainDashboard = () => {
+
+  //getting role using context api from navbar component
+  const { roles } = useContext(newContext);
+  // console.log(roles)
+
+
   const tokenCheck = localStorage.getItem('Tokens')
   const navigate = useNavigate();
 
@@ -34,8 +43,8 @@ const MainDashboard = () => {
     navigate('/history')
   }
 
-  const handleAppointment = () =>{
-    navigate('/book')
+  const handleAppointment = () => {
+    navigate('/appointments')
   }
 
   return (
@@ -65,41 +74,45 @@ const MainDashboard = () => {
       <Container sx={{ py: 6 }}>
         <Grid container spacing={4}>
           {/* Diagnose */}
-          <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                height: "100%",
-                borderRadius: 4,
-                boxShadow: 3,
-                transition: "0.3s",
-                '&:hover': { transform: "translateY(-8px)" }
-              }}
-            >
-              <CardContent>
-                <Stack spacing={2} alignItems="center">
-                  <MedicalServicesIcon fontSize="large" color="primary" />
-                  <Typography variant="h6">Start Diagnosis</Typography>
-                  <Typography variant="body2" color="text.secondary" textAlign="center">
-                    Enter symptoms and get AI-based disease predictions.
-                  </Typography>
+          {
+            roles === 'PATIENT' ? <Grid item xs={12} md={4}>
+              <Card
+                sx={{
+                  height: "100%",
+                  borderRadius: 4,
+                  boxShadow: 3,
+                  transition: "0.3s",
+                  '&:hover': { transform: "translateY(-8px)" }
+                }}
+              >
+                <CardContent>
+                  <Stack spacing={2} alignItems="center">
+                    <MedicalServicesIcon fontSize="large" color="primary" />
+                    <Typography variant="h6">Start Diagnosis</Typography>
+                    <Typography variant="body2" color="text.secondary" textAlign="center">
+                      Enter symptoms and get AI-based disease predictions.
+                    </Typography>
 
-                  {
-                    tokenCheck ? (<>
-                      <Button fullWidth variant="contained" onClick={handleDiagnose}>
-                        Diagnose
-                      </Button>
+                    {
+                      tokenCheck ? (
 
-                    </>) : (<>
-                      <Button fullWidth variant="contained">
-                        Login first
-                      </Button>
-                    </>)
+                        <Button fullWidth variant="contained" onClick={handleDiagnose}>
+                          Diagnose
+                        </Button>
 
-                  }
-                </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
+
+                      ) : (
+                        <Button fullWidth variant="contained">
+                          Login first
+                        </Button>
+                      )
+
+                    }
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid> : null
+          }
 
           {/* AI Chat */}
           <Grid item xs={12} md={4}>
@@ -191,23 +204,39 @@ const MainDashboard = () => {
               <CardContent>
                 <Stack spacing={2} alignItems="center">
                   <EventAvailableIcon fontSize="large" color="primary" />
-                  <Typography variant="h6">Book Appointment</Typography>
+                  <Typography variant="h6">
+                    {
+                      roles === 'DOCTOR' ? 'All Appointments' : 'Book Appointment'
+                    }
+                  </Typography>
                   <Typography
                     variant="body2"
                     color="text.secondary"
                     textAlign="center"
                   >
-                    Schedule an appointment with certified doctors.
+                    {
+                      roles === 'DOCTOR' ? "View and manage patient appointments" : "Schedule an appointment with certified doctors."
+                    }
                   </Typography>
 
                   {tokenCheck ? (
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      onClick={handleAppointment}
-                    >
-                      Book Now
-                    </Button>
+                    roles === 'DOCTOR' ? (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        onClick={handleAppointment}
+                      >
+                        View all appointments
+                      </Button>
+                    ) : (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        onClick={handleAppointment}
+                      >
+                        Book Now
+                      </Button>
+                    )
                   ) : (
                     <Button fullWidth variant="contained">
                       Login first
@@ -217,6 +246,53 @@ const MainDashboard = () => {
               </CardContent>
             </Card>
           </Grid>
+
+
+          {/* all info about doctor  */}
+          {
+            roles === 'DOCTOR' ? <Grid item xs={12} md={4}>
+              <Card
+                sx={{
+                  height: "100%",
+                  borderRadius: 4,
+                  boxShadow: 3,
+                  transition: "0.3s",
+                  '&:hover': { transform: "translateY(-8px)" }
+                }}
+              >
+                <CardContent>
+                  <Stack spacing={2} alignItems="center">
+                    <EditIcon fontSize="large" color="primary" />
+                    <Typography variant="h6">
+                      {
+                        roles === 'DOCTOR' ? 'Add full Info' : null
+                      }
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      textAlign="center"
+                    >
+                      {
+                        roles === 'DOCTOR' ? "Add your full info to get new appointments" : null
+                      }
+                    </Typography>
+
+                    {
+                      tokenCheck ? (
+                        roles === 'DOCTOR' ? (
+                          <Button fullWidth variant="contained" onClick={() => navigate('/info')}>
+                            Add
+
+                          </Button>
+                        ) : null
+                      ) : null
+                    }
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid> : null
+          }
         </Grid>
       </Container>
 

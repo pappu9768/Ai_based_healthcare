@@ -4,12 +4,14 @@ import Toolbar from '@mui/material/Toolbar';
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Button } from '@mui/material';
+import { useEffect, useState, useContext } from 'react';
 
+import { newContext } from "../ContextApi/context.js";
 const Navbar = () => {
 
   const navigate = useNavigate();
+  const { setRoles } = useContext(newContext);
   const tokens = localStorage.getItem('Tokens');
   const [usersName, setUsersName] = useState('')
   const [role, setRole] = useState('')
@@ -27,6 +29,9 @@ const Navbar = () => {
         const result = await res.json()
         setUsersName(result.userName)
         setRole(result.role)
+        setRoles(result.role)
+        
+
 
       } catch (error) {
         console.log(error)
@@ -61,19 +66,24 @@ const Navbar = () => {
             <MedicalServicesIcon sx={{ mr: 1 }} />
             AI Healthcare Diagnosis System
           </Typography>
+
           <Typography variant="body1">
             {
               tokens ? (
                 <>
+
+
+
                   <Box sx={{
-                    display:'flex',
-                    alignItems:'center',
-                    justifyContent:'space-between',
-                    
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+
                   }}>
-                    <Typography variant='h5' sx={{mr: 3}}>
+
+                    <Typography variant='h5' sx={{ mr: 3 }}>
                       {
-                        role === "DOCTOR" ? <span>Hello,Dr.{usersName}</span> : <span>Welcome,{usersName}</span>
+                        role === "DOCTOR" ? `Hello,Dr.${usersName}` : `Welcome,${usersName}`
                       }
                     </Typography>
                     <button onClick={handleLogout}>Logout</button>

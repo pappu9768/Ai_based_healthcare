@@ -123,7 +123,7 @@ export const login = async (req, res) => {
             })
         }
 
-        const createToken = JWT.sign({ id: user._id, name: user.name, role: user.role }, process.env.SECRET_CODE, { 'expiresIn': '1h' });
+        const createToken = JWT.sign({ id: user._id, name: user.name, role: user.role }, process.env.SECRET_CODE, { 'expiresIn': '1d' });
 
         return res.status(200).json({
             message: "Login!!",

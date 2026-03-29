@@ -11,6 +11,7 @@ import { Navigate } from 'react-router-dom'
 import History from './Components/History'
 import BookAppointment from './Components/BookAppointment'
 import DoctorInfo from './Components/DoctorInfo'
+import AllAppointments from './Components/AllAppointments'
 
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
 
         <Route path='/book' element = {<BookAppointment/>}/>
         <Route path='/info' element = {<DoctorInfo/>}/>
+        <Route path='/appointments' element={<AllAppointments/>}/>
       </Routes>
 
       <ToastContainer position='top-right' />

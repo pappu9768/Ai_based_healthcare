@@ -1,10 +1,12 @@
 import React from 'react'
 import { Box, Paper, Typography, Button, TextField } from '@mui/material'
-
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 const base_url = import.meta.env.VITE_API_BASE_URL
 
 const DoctorInfo = () => {
 
+    const navigate = useNavigate();
     const [moreInfo, setMoreInfo] = React.useState({
         specialization: '',
         experience: '',
@@ -18,9 +20,9 @@ const DoctorInfo = () => {
     }
 
     const handleSubmit = async (e) => {
-        console.log("hii")
+        // console.log("hii")
         e.preventDefault();
-        console.log(moreInfo)
+        // console.log(moreInfo)
 
         try {
             const token = localStorage.getItem('Tokens');
@@ -44,6 +46,14 @@ const DoctorInfo = () => {
             // console.log(result);
             const { message, error, success } = result
 
+            if(success){
+                toast.success(message);
+                navigate('/main')
+            }else if(error){
+                toast.error(message.details[0])
+            }else if(!success){
+                toast.error(message);
+            }
         } catch (error) {
             console.log(error)
         }
