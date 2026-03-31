@@ -47,6 +47,10 @@ const MainDashboard = () => {
     navigate('/appointments')
   }
 
+  const handleBook = () => {
+    navigate('/book')
+  }
+
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "#f4f6f8" }}>
       <Navbar />
@@ -232,7 +236,7 @@ const MainDashboard = () => {
                       <Button
                         fullWidth
                         variant="contained"
-                        onClick={handleAppointment}
+                        onClick={handleBook}
                       >
                         Book Now
                       </Button>

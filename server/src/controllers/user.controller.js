@@ -208,10 +208,10 @@ export const getDoctorForPatient = async(req,res) => {
             });
         }
 
-        const getDoctor = await doctorInfoModel.find().select("-licenseNumber") // 🔥 hide license
+        const getDoctor = await doctorInfoModel.find().select("-licenseNumber") 
             .populate({
                 path: "doctor",
-                select: "name" // 🔥 only required fields
+                select: "name" 
             });
 
         return res.status(200).json({

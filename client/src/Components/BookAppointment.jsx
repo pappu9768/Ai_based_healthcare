@@ -53,7 +53,7 @@ const BookAppointment = () => {
         })
 
         const result = await res.json()
-        console.log(result)
+        // console.log(result)
 
         const {success,message,error} = result;
         if(success){

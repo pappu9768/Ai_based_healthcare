@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import appointmentModel from "../models/bookAppointment.js";
 import userModel from "../models/user.model.js"
 
@@ -65,15 +66,21 @@ export const getAllAppointmnet = async (req, res) => {
         if (!userId) {
             return res.status(400).json({ message: 'user not found', success: false })
         }
-        
+
         if (req.role !== "DOCTOR") {
             return res.status(403).json({
-                message: "Only doctors are access to appointments",
+                message: "Only doctors are access to all appointments",
                 success: false
             });
         }
 
-        const getAll = await appointmentModel.find({ doctor: userId })
+        const getAll = await appointmentModel.find({ doctor: userId }).populate({
+            path: 'patient',
+            select: 'name'
+        }).populate({
+            path: 'doctor',
+            select: 'name'
+        })
 
         return res.status(201).json({
             message: "all appointmnet",
@@ -93,9 +100,9 @@ export const getAllAppointmnet = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
     try {
-        const { status } = req.body;
+        const { appointmentId, status } = req.body;
 
-        const userId = req.id
+
 
         if (req.role !== "DOCTOR") {
             return res.status(403).json({
@@ -103,9 +110,15 @@ export const updateStatus = async (req, res) => {
                 success: false
             });
         }
+        if (!appointmentId || !status) {
+            return res.status(400).json({
+                message: "All fields required",
+                success: false
+            });
+        }
 
         const updatedData = await appointmentModel.findByIdAndUpdate(
-            userId,
+            appointmentId,
             { status },
             { returnDocument: "after" }
         );
