@@ -20,7 +20,7 @@ const RefreshHandler = ({ setAuthenticated }) => {
       setAuthenticated(false)
 
       //  If not logged in & trying to access protected routes
-      const protectedRoutes = ['/diagnose', '/askai', '/history']
+      const protectedRoutes = ['/diagnose', '/askai', '/history', '/book', '/info', '/appointments']
 
       if (protectedRoutes.includes(location.pathname)) {
         navigate('/login', { replace: true })

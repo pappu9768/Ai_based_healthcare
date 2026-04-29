@@ -25,26 +25,35 @@ const App = () => {
 
       <ResfreshHandler setAuthenticated={setAuthenticated} />
       <Routes>
-        <Route path='/' element={<Navigate to="/login"/>}/>
+        <Route path='/' element={<Navigate to="/login" />} />
         <Route path='/main' element={<MainDashboard />} />
 
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
 
         <Route path='/history' element={<PrivateRoute>
-          <History/>
-        </PrivateRoute>}/>
+          <History />
+        </PrivateRoute>} />
 
         <Route path='/diagnose' element={<PrivateRoute>
           <DiagnosisForm />
         </PrivateRoute>} />
+        
         <Route path='/askai' element={<PrivateRoute>
           <AskAi />
         </PrivateRoute>} />
 
-        <Route path='/book' element = {<BookAppointment/>}/>
-        <Route path='/info' element = {<DoctorInfo/>}/>
-        <Route path='/appointments' element={<AllAppointments/>}/>
+        <Route path='/book' element={<PrivateRoute>
+          <BookAppointment />
+        </PrivateRoute>} />
+
+        <Route path='/info' element={<PrivateRoute>
+          <DoctorInfo />
+        </PrivateRoute>} />
+
+        <Route path='/appointments' element={<PrivateRoute>
+          <AllAppointments />
+        </PrivateRoute>} />
       </Routes>
 
       <ToastContainer position='top-right' />

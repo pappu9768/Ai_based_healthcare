@@ -8,7 +8,10 @@ import {
   IconButton,
   Stack
 } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
+
 
 const base_url = import.meta.env.VITE_API_BASE_URL
 
@@ -16,6 +19,7 @@ const History = () => {
   const [chats, setChats] = useState([])
   const [loading, setLoading] = useState(true)
 
+  const navigate = useNavigate();
   const token = localStorage.getItem('Tokens')
 
   const getAllChats = async () => {
@@ -71,14 +75,26 @@ const History = () => {
     <Container maxWidth="md" sx={{ mt: 4 }}>
 
       {/* 🔥 HEADER WITH DELETE ICON */}
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <IconButton color="error" onClick={handleDeleteAll}>
-          <DeleteIcon />
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={1}
+        border={2}
+        p={2}
+        borderRadius={2}
+        position="relative"
+      >
+        <IconButton onClick={() => navigate('/main')}>
+          <ArrowBackIcon />
         </IconButton>
 
         <Typography variant="h5">
           Chat History
         </Typography>
+
+        <IconButton color="error" onClick={handleDeleteAll} sx={{ position: "absolute", right: 8 }}>
+          <DeleteIcon />
+        </IconButton>
       </Stack>
 
       {/* ❌ EMPTY STATE */}

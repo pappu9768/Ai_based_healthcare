@@ -4,10 +4,14 @@ import Toolbar from '@mui/material/Toolbar';
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 
 import Typography from '@mui/material/Typography';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
+
 import { useEffect, useState, useContext } from 'react';
 
 import { newContext } from "../ContextApi/context.js";
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu'
+import ResponsiveMenu from './ResponsiveMenu.jsx';
 const Navbar = () => {
 
   const navigate = useNavigate();
@@ -30,7 +34,7 @@ const Navbar = () => {
         setUsersName(result.userName)
         setRole(result.role)
         setRoles(result.role)
-        
+
 
 
       } catch (error) {
@@ -57,14 +61,17 @@ const Navbar = () => {
     navigate('/login');
   }
 
+  const [showMenu,setShowMenu] = useState(false)
+
+
   return (
     <Box mb={5}>
       <AppBar sx={{ mb: 2 }}>
-        <Toolbar>
-
-          <Typography variant="h6" sx={{ flexGrow: 1 }} onClick={(() => navigate('/'))}>
-            <MedicalServicesIcon sx={{ mr: 1 }} />
-            AI Healthcare Diagnosis System
+        <Toolbar >
+          <MedicalServicesIcon sx={{ mr: 1}} />
+          <Typography variant='h6' sx={{ flexGrow: 1, fontSize: { xs: 20,md:25 } }} onClick={(() => navigate('/'))}>
+            
+            AI-Diagnosis
           </Typography>
 
           <Typography variant="body1">
@@ -75,10 +82,10 @@ const Navbar = () => {
 
 
                   <Box sx={{
-                    display: 'flex',
+                    display: {xs: 'none', md:'flex'},
                     alignItems: 'center',
                     justifyContent: 'space-between',
-
+                  
                   }}>
 
                     <Typography variant='h5' sx={{ mr: 3 }}>
@@ -88,6 +95,15 @@ const Navbar = () => {
                     </Typography>
                     <button onClick={handleLogout}>Logout</button>
                   </Box>
+
+                  <IconButton color='inherit' sx={{
+                    display:{xs:'block',md:'none'}
+                  }}
+                  onClick={() => setShowMenu(true)}
+                  
+                  >
+                      <MenuIcon/>
+                  </IconButton>
                 </>
               ) : (
                 <>
@@ -99,8 +115,10 @@ const Navbar = () => {
                 </>
               )
             }
+
           </Typography>
         </Toolbar>
+        <ResponsiveMenu showMenu={showMenu} setShowMenu={setShowMenu} tokens={tokens} role={role} userName={usersName}/>
       </AppBar>
     </Box>
   );

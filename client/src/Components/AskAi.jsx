@@ -10,12 +10,15 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { toast } from "react-toastify";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
 const AskAi = () => {
     const [message, setMessage] = useState("");
     const [chat, setChat] = useState([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const chatEndRef = useRef(null);
 
@@ -73,7 +76,7 @@ const AskAi = () => {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
             <Box
                 sx={{
                     height: "100vh",
@@ -103,9 +106,22 @@ const AskAi = () => {
                             p: 2,
                             bgcolor: "#1976d2",
                             color: "#fff",
-                            textAlign: "center"
+                            display:"flex",
+                            alignItems:"center",
+                            justifyContent:"center",
+                            position:"relative"
                         }}
                     >
+
+                        <IconButton onClick={() => navigate('/main')} 
+                            sx={{
+                                position:"absolute",
+                                left:8,
+                                color:"#fff"
+                            }}
+                        >
+                            <ArrowBackIcon />
+                        </IconButton>
                         <Typography variant="h6">AI Health Assistant</Typography>
                     </Box>
 

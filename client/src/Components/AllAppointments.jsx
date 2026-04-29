@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
+import TopBanner from './TopBanner';
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 
@@ -72,7 +73,9 @@ const AllAppointments = () => {
   };
 
   return (
+    
     <Container maxWidth="md" sx={{ mt: 4 }}>
+      <TopBanner text="All Appointments"/>
 
       {/* 🔹 Header */}
       <Stack

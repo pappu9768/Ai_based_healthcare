@@ -18,7 +18,7 @@ import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EditIcon from '@mui/icons-material/Edit';
-
+import banner  from '../assets/hero.jpg'
 import { useContext } from "react";
 import { newContext } from "../ContextApi/context.js";
 const MainDashboard = () => {
@@ -56,20 +56,36 @@ const MainDashboard = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <Box
-        sx={{
-          py: 8,
-          background: "linear-gradient(135deg, #1976d2, #42a5f5)",
-          color: "#fff",
-          textAlign: "center"
-        }}
-      >
-        <Container>
-          <Typography variant="h3" fontWeight="bold" gutterBottom>
+      <Box sx={{
+        width:'100%',
+        height:{xs:400,sm:350,md:450},
+        backgroundImage: `url(${banner})`,
+        backgroundSize:'cover',
+        backgroundPosition:'center',
+        display:'flex',
+        alignItems: "center",
+        justifyContent:"center",
+        textAlign:"center",
+        position:"relative",
+        color:"blue",
+        borderRadius:6
+      }}>
+        <Container sx={{
+          position:"relative",
+          zIndex:1
+        }} >
+          <Typography variant="h3" fontWeight="bold" gutterBottom sx={{
+            fontSize:{ xs: '24px',md:'40px'}
+          }}>
             Smart Healthcare Diagnosis
           </Typography>
-          <Typography variant="h6" sx={{ opacity: 0.9 }}>
-            AI-powered system to analyze symptoms and assist in early detection
+          <Typography variant="h6" sx={{
+            opacity:0.9,
+            fontSize:{
+              xs: '14px',md: '18px'
+            }
+          }}>
+            AI-Powered system to analyze symptoms and assist in early detection
           </Typography>
         </Container>
       </Box>
