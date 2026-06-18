@@ -7,11 +7,11 @@ import {
     Paper,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const base_url = import.meta.env.VITE_API_BASE_URL
 
 
-const Login = () => {
+const Login = ({ setAuthenticated }) => {
 
     const navigate = useNavigate();
     const [loginData, setloginData] = useState({
@@ -28,7 +28,7 @@ const Login = () => {
         // console.log(loginData);
 
         try {
-            const url = `${base_url}/login`;
+            const url = `${base_url}/api/v1/auth/login`;
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -44,12 +44,13 @@ const Login = () => {
             const result = await res.json();
             // console.log(result);
 
-            const { message, error, success,createToken } = result
+            const { message, error, success, createToken } = result
 
             if (success) {
                 toast.success(message);
-                localStorage.setItem('Tokens',createToken)
-                navigate('/')
+                localStorage.setItem('Tokens', createToken)
+                setAuthenticated(true)
+                navigate('/main', { replace: true })
             } else if (error) {
                 toast.error(error?.details[0].message);
             } else if (!success) {

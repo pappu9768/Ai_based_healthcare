@@ -6,6 +6,8 @@ configDotenv();
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { tokenCheck } from './src/middleware/tokenCheck.js';
+import connectDatabase from './src/connectDb/Db.js';
+import patientRouter from './src/routes/patient.routes.js';
 const app = express()
 
 
@@ -25,7 +27,7 @@ app.use(cors({
 
 //routes
 app.use('/api/v1/auth', router);
-
+app.use('/api/v1',patientRouter)
 app.get('/name',tokenCheck,async(req,res) => {
     try {
         const userName = req.name;
@@ -65,6 +67,7 @@ const connectDB = async () => {
 
 const port = process.env.PORT
 app.listen(port, () => {
-    connectDB();
+    connectDatabase();
+    // connectDB();
     console.log(`Server is running on ${port}`);
 })

@@ -50,7 +50,7 @@ const Register = () => {
         // setLiNum("")
         // setExperience("")
         try {
-            const url = `${base_url}/register`;
+            const url = `${base_url}/api/v1/auth/register`;
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {

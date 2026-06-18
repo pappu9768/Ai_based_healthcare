@@ -23,7 +23,7 @@ const AllAppointments = () => {
   useEffect(() => {
     const getAllAppoints = async () => {
       try {
-        const res = await fetch(`${base_url}/all`, {
+        const res = await fetch(`${base_url}/api/v1/all`, {
           method: 'GET',
           headers: {
             'Content-type': 'application/json',
@@ -45,7 +45,7 @@ const AllAppointments = () => {
   // 🔥 Update Status
   const handleStatus = async (id, status) => {
     try {
-      const res = await fetch(`${base_url}/status`, {
+      const res = await fetch(`${base_url}/api/v1/status`, {
         method: 'PATCH',
         headers: {
           'Content-type': 'application/json',
@@ -74,7 +74,7 @@ const AllAppointments = () => {
 
   return (
     
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container maxWidth="md" sx={{ mt: 4,background:"linear-gradient(90deg,rgba(26, 58, 92, 1) 0%, rgba(27, 107, 60, 1) 58%, rgba(15, 245, 99, 1) 100%, rgba(193, 227, 196, 1) 67%, rgba(237, 221, 83, 1) 100%)" }}>
       <TopBanner text="All Appointments"/>
 
       {/* 🔹 Header */}

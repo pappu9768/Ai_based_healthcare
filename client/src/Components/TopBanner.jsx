@@ -6,14 +6,16 @@ const TopBanner = ({ text }) => {
     return (
         <Box
             sx={{
-                height: { xs: '40vh', sm: '50vh', md: '55vh' },
+                height: { xs: '40vh', sm: '50vh', md: '40vh' },
                 position: 'relative',
                 mt: { xs: -6, md: -8 }, // same as -mt-12
                 backgroundImage: `url(${banner2})`,
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
-                borderRadius: 8
+                borderRadius: 8,
+                boxShadow:"0px 10px 5px 0px rgba(0,0,0,0.75)"
+
             }}
         >
             {/* Overlay */}

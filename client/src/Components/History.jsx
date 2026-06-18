@@ -11,6 +11,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
+import TopBanner from './TopBanner';
 
 
 const base_url = import.meta.env.VITE_API_BASE_URL
@@ -24,7 +25,7 @@ const History = () => {
 
   const getAllChats = async () => {
     try {
-      const res = await fetch(`${base_url}/history`, {
+      const res = await fetch(`${base_url}/api/v1/history`, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": token
@@ -44,13 +45,13 @@ const History = () => {
     getAllChats()
   }, [])
 
-  // ✅ DELETE ALL CHATS
+  //  DELETE ALL CHATS
   const handleDeleteAll = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete all chats?")
     if (!confirmDelete) return
 
     try {
-      const res = await fetch(`${base_url}/history`, {
+      const res = await fetch(`${base_url}/api/v1/history`, {
         method: "DELETE",
         headers: {
           "Authorization": `${token}`
@@ -72,9 +73,12 @@ const History = () => {
   }
 
   return (
+
+    <>
+    <TopBanner text="History"/>
     <Container maxWidth="md" sx={{ mt: 4 }}>
 
-      {/* 🔥 HEADER WITH DELETE ICON */}
+      {/* HEADER WITH DELETE ICON */}
       <Stack
         direction="row"
         alignItems="center"
@@ -150,6 +154,7 @@ const History = () => {
 
       )}
     </Container>
+    </>
   )
 }
 

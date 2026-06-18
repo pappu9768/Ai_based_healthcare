@@ -13,7 +13,7 @@ export const createAppointment = async (req, res) => {
         //only pateint can create appointment
         if (req.role !== "PATIENT") {
             return res.status(403).json({
-                message: "Only patients can create appointments",
+                message: "Only patients can Appoint an Doctor",
                 success: false
             });
         }

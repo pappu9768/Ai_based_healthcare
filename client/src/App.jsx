@@ -4,7 +4,6 @@ import Register from './Components/Register'
 import Login from './Components/Login'
 import { ToastContainer } from 'react-toastify'
 import MainDashboard from './Components/MainDashboard'
-import DiagnosisForm from './Components/DiagnosisForm'
 import AskAi from './Components/AskAi'
 import ResfreshHandler from './ResfreshHandler'
 import { Navigate } from 'react-router-dom'
@@ -16,28 +15,35 @@ import AllAppointments from './Components/AllAppointments'
 
 const App = () => {
 
-  const [authenticated, setAuthenticated] = React.useState(false)
+  const [authenticated, setAuthenticated] = React.useState(null)
   const PrivateRoute = ({ children }) => {
-    return authenticated ? children : <Navigate to="/login" />
+    if (authenticated === null){
+      return <div>Loading...</div>
+    }
+
+    return authenticated ? children : <Navigate to="/login" replace/>
   }
   return (
     <>
 
       <ResfreshHandler setAuthenticated={setAuthenticated} />
       <Routes>
-        <Route path='/' element={<Navigate to="/login" />} />
-        <Route path='/main' element={<MainDashboard />} />
+        <Route path='/' element={<Navigate to="/main" replace/>} />
+
+        <Route path='/main' element={<PrivateRoute>
+          <MainDashboard />
+        </PrivateRoute>} />
 
         <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/login' element={
+          authenticated ? <Navigate to="/main" replace/> : <Login setAuthenticated={setAuthenticated}/>
+        } />
 
         <Route path='/history' element={<PrivateRoute>
           <History />
         </PrivateRoute>} />
 
-        <Route path='/diagnose' element={<PrivateRoute>
-          <DiagnosisForm />
-        </PrivateRoute>} />
+        
         
         <Route path='/askai' element={<PrivateRoute>
           <AskAi />
@@ -61,4 +67,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;

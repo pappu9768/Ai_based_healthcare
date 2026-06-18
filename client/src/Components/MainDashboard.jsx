@@ -21,6 +21,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import banner  from '../assets/hero.jpg'
 import { useContext } from "react";
 import { newContext } from "../ContextApi/context.js";
+import Footer from "./Footer.jsx";
 const MainDashboard = () => {
 
   //getting role using context api from navbar component
@@ -35,9 +36,7 @@ const MainDashboard = () => {
     navigate("/askai");
   };
 
-  const handleDiagnose = () => {
-    navigate("/diagnose");
-  };
+  
 
   const handleHistory = () => {
     navigate('/history')
@@ -93,46 +92,7 @@ const MainDashboard = () => {
       {/* Feature Cards */}
       <Container sx={{ py: 6 }}>
         <Grid container spacing={4}>
-          {/* Diagnose */}
-          {
-            roles === 'PATIENT' ? <Grid item xs={12} md={4}>
-              <Card
-                sx={{
-                  height: "100%",
-                  borderRadius: 4,
-                  boxShadow: 3,
-                  transition: "0.3s",
-                  '&:hover': { transform: "translateY(-8px)" }
-                }}
-              >
-                <CardContent>
-                  <Stack spacing={2} alignItems="center">
-                    <MedicalServicesIcon fontSize="large" color="primary" />
-                    <Typography variant="h6">Start Diagnosis</Typography>
-                    <Typography variant="body2" color="text.secondary" textAlign="center">
-                      Enter symptoms and get AI-based disease predictions.
-                    </Typography>
-
-                    {
-                      tokenCheck ? (
-
-                        <Button fullWidth variant="contained" onClick={handleDiagnose}>
-                          Diagnose
-                        </Button>
-
-
-                      ) : (
-                        <Button fullWidth variant="contained">
-                          Login first
-                        </Button>
-                      )
-
-                    }
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Grid> : null
-          }
+          
 
           {/* AI Chat */}
           <Grid item xs={12} md={4}>
@@ -268,7 +228,7 @@ const MainDashboard = () => {
           </Grid>
 
 
-          {/* all info about doctor  */}
+          {/* all info about doctor this section is only for doctors */}
           {
             roles === 'DOCTOR' ? <Grid item xs={12} md={4}>
               <Card
@@ -316,55 +276,8 @@ const MainDashboard = () => {
         </Grid>
       </Container>
 
-      {/* Footer */}
-      <Box sx={{ backgroundColor: "#0d47a1", color: "#fff", py: 5, mt: 4 }}>
-        <Container>
-          <Grid container spacing={4}>
-            {/* About */}
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6" gutterBottom>
-                About This App
-              </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                This platform uses AI to help users understand symptoms and
-                get early insights into possible health conditions.
-              </Typography>
-            </Grid>
-
-            {/* Features */}
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6" gutterBottom>
-                Features
-              </Typography>
-              <Typography variant="body2">• AI Diagnosis</Typography>
-              <Typography variant="body2">• Chat Assistant</Typography>
-              <Typography variant="body2">• History Tracking</Typography>
-            </Grid>
-
-            {/* Developer */}
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6" gutterBottom>
-                Developer
-              </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                Developed by: Supriya
-              </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                Email: Supriya@email.com
-              </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                Version: 1.0.0
-              </Typography>
-            </Grid>
-          </Grid>
-
-          <Box textAlign="center" mt={4}>
-            <Typography variant="body2" sx={{ opacity: 0.7 }}>
-              © 2026 Smart Healthcare AI. All rights reserved.
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
+      {/* Footer  */}
+      <Footer/>
     </Box>
   );
 };

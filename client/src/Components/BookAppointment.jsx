@@ -3,18 +3,18 @@ import React from 'react'
 const base_url = import.meta.env.VITE_API_BASE_URL
 import { toast } from 'react-toastify';
 import TopBanner from './TopBanner';
-import Navbar from './Navbar'
 const BookAppointment = () => {
 
     const [doctors, setDoctors] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
+    const [appointmentStatus,setAppointmentStatus] = React.useState({})
     const token = localStorage.getItem('Tokens');
     React.useEffect(() => {
 
         const getDoctors = async () => {
             try {
 
-                const url = `${base_url}/getdoctorinfo`
+                const url = `${base_url}/api/v1/getdoctorinfo`
 
                 const res = await fetch(url, {
                     method: 'GET',
@@ -24,7 +24,7 @@ const BookAppointment = () => {
                     }
                 })
                 const result = await res.json()
-                console.log(result);
+                // console.log(result);
                 setDoctors(result.getDoctor);
             } catch (error) {
                 console.log(error)
@@ -39,7 +39,7 @@ const BookAppointment = () => {
     const handleBooking = async (doctorId, doctorName) => {
         if (!window.confirm(`Are you sure do you want to book an appointment with DR.${doctorName}`)) return;
 
-        const url = `${base_url}/${doctorId}/appointment`
+        const url = `${base_url}/api/v1/${doctorId}/appointment`
 
         const res = await fetch(url, {
             method: 'POST',
@@ -55,11 +55,17 @@ const BookAppointment = () => {
         })
 
         const result = await res.json()
-        // console.log(result)
+        console.log(result)
 
         const { success, message, error } = result;
         if (success) {
             toast.success(message)
+            setAppointmentStatus((prev) => ({
+                ...prev,
+                [doctorId]: result.newApnt.status
+
+            }))
+
         } else if (error) {
             toast.error(message?.details[0])
         } else if (!success) {
@@ -77,8 +83,8 @@ const BookAppointment = () => {
     }
     return (
         <>
-        <Navbar/>
-        <TopBanner text="Book"/>
+            
+            <TopBanner text="Book Appointment" />
             <Container maxWidth='md' sx={{ mt: 4 }}>
 
                 <Stack direction="row" alignItems="center" spacing={1}>
@@ -130,7 +136,7 @@ const BookAppointment = () => {
                                                 onClick={() => handleBooking(val.doctor._id, val.doctor.name)}
                                             >
                                                 {/* () => console.log("Book", val.doctor._id) */}
-                                                Book Appointment
+                                                {appointmentStatus[val.doctor._id]  || "Book appointment"}
                                             </Button>
                                         </Box>
                                     </Stack>

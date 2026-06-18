@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+const base_url = import.meta.env.VITE_API_BASE_URL;
 
 const AskAi = () => {
     const [message, setMessage] = useState("");
@@ -43,7 +44,7 @@ const AskAi = () => {
             const token = localStorage.getItem("Tokens");
 
             const res = await fetch(
-                "http://localhost:8080/api/v1/auth/diagnose",
+                `${base_url}/api/v1/diagnose`,
                 {
                     method: "POST",
                     headers: {
@@ -55,7 +56,7 @@ const AskAi = () => {
             );
 
             const data = await res.json();
-            console.log(data)
+            // console.log(data)
             const aiMessage = {
                 sender: "ai",
                 text: data?.aiResponse || "AI could not generate response"

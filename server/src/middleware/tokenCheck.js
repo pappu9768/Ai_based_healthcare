@@ -3,6 +3,7 @@ import JWT from 'jsonwebtoken'
 export const tokenCheck = async (req, res, next) => {
     try {
         const getToken = req.headers['authorization'];
+        // const getToken = req.cookies.token;
 
         if (!getToken) {
             return res.status(401).json({

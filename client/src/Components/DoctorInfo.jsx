@@ -26,7 +26,7 @@ const DoctorInfo = () => {
 
         try {
             const token = localStorage.getItem('Tokens');
-            const url = `${base_url}/doctorInfo`
+            const url = `${base_url}/api/v1/doctorInfo`
 
             const res = await fetch(url, {
                 method: 'POST',
