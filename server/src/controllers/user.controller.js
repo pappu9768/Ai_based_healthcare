@@ -1,7 +1,16 @@
 import registerModel from '../models/user.model.js'
 import bcrypt from 'bcrypt'
 import JWT from 'jsonwebtoken'
-import doctorInfoModel from '../models/aboutDoctor.js';
+import doctorProfileModel from '../models/aboutDoctor.js';
+import { nanoid } from 'nanoid';
+import { sendMailForVerification } from '../../utills/email.js';
+import otpModel from '../models/otpModel.js';
+
+const generateNewOtp = () => {
+    const otp = nanoid(6)
+    // console.log(otp)
+    return otp
+}
 
 
 
@@ -49,11 +58,11 @@ export const register = async (req, res) => {
 
         if (user) {
             return res.status(400).json({
-                message: "oops! Email already exist",
+                message: "oops! Email already exist. Please login",
                 success: false
             })
         }
-       
+
 
         const hashPassword = await bcrypt.hash(password, 10);
 
@@ -65,16 +74,30 @@ export const register = async (req, res) => {
             role
         }
 
-        
-        const createUser = await registerModel.create(newUser)
+        const getOtp = generateNewOtp();
+        const resotp = await otpModel.create({
+            otp: getOtp,
+            email
+        })
+        try {
+            await sendMailForVerification(email, getOtp)
+        } catch (err) {
+            return res.status(400).json({
+                message: "otp not send error found",
+                success: false
+            })
+        }
 
 
+
+        const createUser = await registerModel.create(newUser);
 
 
         return res.status(201).json({
-            message: "Registration successfull",
+            message: "Otp send!!",
             success: true,
-            createUser
+            createUser,
+            resotp
         })
 
     } catch (error) {
@@ -89,6 +112,12 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
+        if (!email) {
+            return res.status(400).json({
+                message: "Email is required",
+                success: false
+            })
+        }
 
         if (!password) {
             return res.status(400).json({
@@ -116,6 +145,8 @@ export const login = async (req, res) => {
 
         const checkPassword = await bcrypt.compare(password, user.password);
 
+
+
         if (!checkPassword) {
             return res.status(400).json({
                 message: "Invalid Password",
@@ -123,13 +154,25 @@ export const login = async (req, res) => {
             })
         }
 
-        
+        if (!user.isVerified) {
+            const newOtp = generateNewOtp();
+            await otpModel.findOneAndDelete({ email: user.email })
+            await otpModel.create({ email: user.email, otp: newOtp });
+            await sendMailForVerification(email, newOtp)
+            return res.status(200).json({
+                message: "Please Verify your email",
+                success: false,
+                "requireOtp": true
+            })
+        }
+
+
         const createToken = JWT.sign({ id: user._id, name: user.name, role: user.role }, process.env.SECRET_CODE, { 'expiresIn': '1d' });
-        res.cookie('token',createToken,{
-            httpOnly:true,
-            secure:true,
-            sameSite:"strict"
-        })
+        // res.cookie('token',createToken,{
+        //     httpOnly:true,
+        //     secure:true,
+        //     sameSite:"strict"
+        // })
         return res.status(200).json({
             message: "Login!!",
             success: true,
@@ -145,6 +188,34 @@ export const login = async (req, res) => {
     }
 }
 
+export const verifyOtp = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        const otpExist = await otpModel.findOne({ email, otp })
+        if (!otpExist) {
+            return res.status(400).json({
+                message: "invalid otp",
+                success: false
+            })
+        }
+
+        const updateVerify = await registerModel.findOneAndUpdate({ email }, { isVerified: true }, { new: true })
+
+        await otpModel.findOneAndDelete(otpExist._id);
+
+        return res.status(200).json({
+            message: "verified!!",
+            success: true
+        })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({
+            message: "internal server error while verifying otp",
+            success: false
+        })
+    }
+}
 
 export const checkToken = (req, res) => {
     const userrole = req.role
@@ -156,42 +227,42 @@ export const checkToken = (req, res) => {
 }
 
 
-export const upsertDoctorInfo = async (req, res) => {
+export const upsertDoctorProfile = async (req, res) => {
     try {
-        const userId = req.id;
+        const { id } = req.params;
 
         if (req.role !== "DOCTOR") {
             return res.status(403).json({
-                message: "Only doctors can add/update doctor info",
+                message: "Only doctors can add/update doctor Profile",
                 success: false
             });
         }
 
         const { specialization, experience, licenseNumber } = req.body;
-        if(!specialization || !experience || !licenseNumber){
+        if (!specialization || !experience || !licenseNumber) {
             return res.status(400).json({
-                message:"All fields are required",
-                success:false
+                message: "All fields are required",
+                success: false
             })
         }
 
-        let doctorInfo = await doctorInfoModel.findOne({ doctor: userId })
-        if (doctorInfo) {
-            doctorInfo = await doctorInfoModel.findOneAndUpdate(
+        let doctorProfile = await doctorProfileModel.findOne({ doctor: id})
+        if (doctorProfile) {
+            doctorProfile = await doctorProfileModel.findOneAndUpdate(
                 { doctor: userId },
                 { specialization, experience, licenseNumber },
                 { returnDocument: "after" }
             )
-        }else{
-            doctorInfo = await doctorInfoModel.create({
-                doctor:userId,specialization, experience, licenseNumber
+        } else {
+            doctorProfile = await doctorProfileModel.create({
+                doctor: id, specialization, experience, licenseNumber, verifiedDoctor: true
             })
         }
 
         return res.status(201).json({
-            message:"new Doctor Info",
+            message: "new Doctor Profile",
             success: true,
-            doctorInfo
+            doctorProfile
         })
 
     } catch (error) {
@@ -204,24 +275,24 @@ export const upsertDoctorInfo = async (req, res) => {
     }
 }
 
-export const getDoctorForPatient = async(req,res) => {
+export const getDoctorForPatient = async (req, res) => {
     try {
-        if(req.role !== "PATIENT"){
+        if (req.role !== "PATIENT") {
             return res.status(403).json({
                 message: "Only can access doctor info only to book ",
                 success: false
             });
         }
 
-        const getDoctor = await doctorInfoModel.find().select("-licenseNumber") 
+        const getDoctor = await doctorInfoModel.find().select("-licenseNumber")
             .populate({
                 path: "doctor",
-                select: "name" 
+                select: "name"
             });
 
         return res.status(200).json({
-            message:"All doctors",
-            success:true,
+            message: "All doctors",
+            success: true,
             getDoctor
         })
 
@@ -232,6 +303,6 @@ export const getDoctorForPatient = async(req,res) => {
             success: false,
             Error: error
         })
-    
+
     }
 }

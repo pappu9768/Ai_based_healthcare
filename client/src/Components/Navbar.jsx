@@ -1,128 +1,36 @@
-import React from 'react';
+import React from 'react'
+import { IoIosLogOut } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 
-import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
-
-import { useEffect, useState, useContext } from 'react';
-
-import { newContext } from "../ContextApi/context.js";
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu'
-import ResponsiveMenu from './ResponsiveMenu.jsx';
 const Navbar = () => {
-
-  const navigate = useNavigate();
-  const { setRoles } = useContext(newContext);
-  const tokens = localStorage.getItem('Tokens');
-  const [usersName, setUsersName] = useState('')
-  const [role, setRole] = useState('')
-
-  useEffect(() => {
-    const getUsername = async () => {
-      try {
-        const res = await fetch('http://localhost:8080/name', {
-          method: 'GET',
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': `${tokens}`
-          }
-        })
-        const result = await res.json()
-        setUsersName(result.userName)
-        setRole(result.role)
-        setRoles(result.role)
-
-
-
-      } catch (error) {
-        console.log(error)
-      }
+    const navigate = useNavigate();
+    const handleLogout = () =>{
+        localStorage.removeItem('tokens');
+        navigate('/login');
     }
-
-    if (tokens) {
-      getUsername()
-    }
-
-  }, [tokens])
-
-  const handleLogin = () => {
-    navigate('/login')
-  }
-
-  const handleRegister = () => {
-    navigate('/register');
-  }
-
-  const handleLogout = () => {
-    localStorage.removeItem('Tokens');
-    navigate('/login');
-  }
-
-  const [showMenu,setShowMenu] = useState(false)
-
-
   return (
-    <Box mb={5}>
-      <AppBar sx={{ mb: 2 }}>
-        <Toolbar >
-          <MedicalServicesIcon sx={{ mr: 1}} />
-          <Typography variant='h6' sx={{ flexGrow: 1, fontSize: { xs: 20,md:25 } }} onClick={(() => navigate('/'))}>
-            
-            AI-Diagnosis
-          </Typography>
+    <>
+    <nav className='w-full h-20.5 bg-black flex items-center justify-between'>
+        <div className='text-3xl font-bold text-white ml-6 cursor-pointer'>
+            <a href="/home"><h2>AI <span className='text-red-600'>Healthcare</span></h2></a>
+        </div>
 
-          <Typography variant="body1">
-            {
-              tokens ? (
-                <>
+        <div className=' text-white font-extrabold mr-7'>
+            <ul className='flex items-center justify-center gap-5'>
+                <li>Home</li>
+                <li>MyAppointments</li>
+                <li>About us</li>
+            </ul>
+        </div>
 
+        <div className='flex items-center justify-center gap-2 mr-7'>
+            <IoIosLogOut className='text-white text-3xl'/>
+            <button className='text-white px-2 py-2 bg-red-600 border rounded hover:bg-red-700' onClick={handleLogout}>Logout</button>
+        </div>
 
+    </nav>
+    </>
+  )
+}
 
-                  <Box sx={{
-                    display: {xs: 'none', md:'flex'},
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  
-                  }}>
-
-                    <Typography variant='h5' sx={{ mr: 3 }}>
-                      {
-                        role === "DOCTOR" ? `Hello,Dr.${usersName}` : `Welcome,${usersName}`
-                      }
-                    </Typography>
-                    <button onClick={handleLogout}>Logout</button>
-                  </Box>
-
-                  <IconButton color='inherit' sx={{
-                    display:{xs:'block',md:'none'}
-                  }}
-                  onClick={() => setShowMenu(true)}
-                  
-                  >
-                      <MenuIcon/>
-                  </IconButton>
-                </>
-              ) : (
-                <>
-                  <div className='not-user'>
-                    <h2>Welcome! User</h2>
-                    <button onClick={handleLogin}>Login</button>
-                    <button onClick={handleRegister}>Register</button>
-                  </div>
-                </>
-              )
-            }
-
-          </Typography>
-        </Toolbar>
-        <ResponsiveMenu showMenu={showMenu} setShowMenu={setShowMenu} tokens={tokens} role={role} userName={usersName}/>
-      </AppBar>
-    </Box>
-  );
-};
-
-export default Navbar;
+export default Navbar

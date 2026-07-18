@@ -16,12 +16,16 @@ const doctorInfoSchema = new mongoose.Schema({
     licenseNumber: {
         type:Number,
         unique: true
+    },
+    verifiedDoctor:{
+        type:Boolean,
+        default:false
     }
 
 },{
     timestamps: true
 })
 
-const doctorInfoModel = new mongoose.model('doctorInfo',doctorInfoSchema);
+const doctorProfileModel = new mongoose.model('doctorInfo',doctorInfoSchema);
 
-export default doctorInfoModel
+export default doctorProfileModel

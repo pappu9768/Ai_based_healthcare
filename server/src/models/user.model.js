@@ -20,6 +20,10 @@ const registerSchema = new mongoose.Schema({
         enum: ["PATIENT", "DOCTOR"],
         required: true
     },
+    isVerified:{
+        type:Boolean,
+        default: false
+    }
     // status: {
     //     type: String,
     //     enum: ["PENDING", "APPROVED", "REJECTED"],

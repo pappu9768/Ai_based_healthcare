@@ -26,7 +26,7 @@ export const createAppointment = async (req, res) => {
         }
 
         //no dublicate appointmnet will happen
-        const existing = await appointmentModel.findOne({
+        const existing = await appointmentModel.find({
             patient: userId,
             doctor: doctorId
         });
@@ -90,7 +90,7 @@ export const getAllAppointmnet = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(400).json({
             message: "Error found while getting appointment",
             success: false
@@ -100,7 +100,9 @@ export const getAllAppointmnet = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
     try {
-        const { appointmentId, status } = req.body;
+        const { status } = req.body;
+        const appointments = await appointmentModel.findById(req.params.id).populate('doctor').populate('patient');
+        if (!appointments) return res.status(404).json({ message: "Appointments is already booked", success: true })
 
 
 
@@ -110,15 +112,17 @@ export const updateStatus = async (req, res) => {
                 success: false
             });
         }
-        if (!appointmentId || !status) {
+        if (!status) {
             return res.status(400).json({
                 message: "All fields required",
                 success: false
             });
         }
 
+      
+
+
         const updatedData = await appointmentModel.findByIdAndUpdate(
-            appointmentId,
             { status },
             { returnDocument: "after" }
         );
@@ -132,8 +136,58 @@ export const updateStatus = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(400).json({
-            message: "Error found while updting status",
+            message: "Error found while updating status",
             success: false
         })
     }
 }
+
+export const getAppointsOfPatient = async (req, res) => {
+    try {
+        const userId = req.id;
+        if (!userId) {
+            return res.status(400).json({ message: 'you are not logined', success: false })
+        }
+
+        //only patient can access this get appointments
+        if (req.role !== "PATIENT") {
+            return res.status(403).json({ message: "Only for patients", success: false })
+        }
+
+        //getting logged in users appointments
+        const appoints = await appointmentModel.find({ patient: userId }).populate({
+            path: 'doctor',
+            select: 'name'
+        });
+
+        return res.status(200).json({
+            message: "Here all your appointments",
+            success: true,
+            appoints
+        })
+    } catch (error) {
+        return res.status(400).json({
+            message: "Error found while Appointments of patient",
+            success: false
+        })
+    }
+}
+
+export const getUpdatedStatus = async (req, res) => {
+    try {
+        const userId = req.id;
+
+        if (!userId) {
+            return res.status(400).json({ message: 'you are not logined', success: false })
+        }
+
+
+
+
+    } catch (error) {
+        return res.status(400).json({
+            message: "Error found while getting status",
+            success: false
+        })
+    }
+} 

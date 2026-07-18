@@ -28,6 +28,8 @@ app.use(cors({
 //routes
 app.use('/api/v1/auth', router);
 app.use('/api/v1',patientRouter)
+
+
 app.get('/name',tokenCheck,async(req,res) => {
     try {
         const userName = req.name;
