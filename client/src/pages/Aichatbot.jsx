@@ -5,6 +5,8 @@ import { IoSend } from "react-icons/io5";
 import { toast } from 'react-toastify'
 import Loading from '../components/Loading.jsx';
 import { useNavigate } from 'react-router-dom';
+import { GiCancel } from "react-icons/gi";
+
 const Aichatbot = () => {
 
     const navigate = useNavigate();
@@ -82,11 +84,14 @@ const Aichatbot = () => {
                 <div className="w-full max-w-5xl h-[90vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col">
 
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-red-600 to-red-300 text-white px-6 py-5">
-                        <h2 className="text-2xl font-bold">Welcome, User 👋</h2>
-                        <p className="text-sm text-blue-100">
-                            Ask anything about your health.
-                        </p>
+                    <div className="bg-gradient-to-r from-red-600 to-red-300 text-white px-6 py-5 flex">
+                        <GiCancel className='text-3xl mx-5 my-auto' onClick={() => navigate('/home')}/>
+                        <div>
+                            <h2 className="text-2xl font-bold">Welcome, User 👋</h2>
+                            <p className="text-sm text-blue-100">
+                                Ask anything about your health.
+                            </p>
+                        </div>
                     </div>
 
                     {/* Chat Area */}
@@ -99,8 +104,8 @@ const Aichatbot = () => {
 
                                     <div
                                         className={`w-13 h-13 rounded-full flex items-center justify-center text-sm font-semibold mr-2 ${msg.sender === "user"
-                                                ? "bg-red-800 text-white"
-                                                : "bg-red-600 text-white"
+                                            ? "bg-red-800 text-white"
+                                            : "bg-red-600 text-white"
                                             }`}
                                     >
                                         {msg.sender === "user" ? "U" : "AI"}

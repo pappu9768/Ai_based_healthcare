@@ -39,13 +39,13 @@ export const AuthProvider = ({ children }) => {
         try {
             setLoading(true);
             const resLogin = await api.post('/api/v1/auth/login', { email, password });
-            console.log(resLogin.data?.createToken);
+            // console.log(resLogin.data?.createToken);
             // setUser(resLogin.data?.createToken);
             return resLogin
         } catch (err) {
             // console.log(err)
             // console.log(err.response)
-            console.log(err.response?.data)
+            // console.log(err.response?.data)
             const msg = err.response?.data?.message || 'Something went wrong while login'
             throw new Error(msg)
         } finally {
@@ -53,10 +53,20 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const getUsernameAndRole = async () => {
+        try {
+            const res = await api.get('/name');
+            // console.log(res);
+            return res
+        } catch (err) {
+            console.log(err.response?.data)
+        }
+    }
+
 
     return (
         <>
-            <AuthContext.Provider value={{ register, verifyOtp, setLoading, login, loading, user,setUser, setOTP, OTP }}>
+            <AuthContext.Provider value={{ register, verifyOtp, setLoading, login, loading, user, setUser, setOTP, OTP, getUsernameAndRole }}>
                 {children}
             </AuthContext.Provider>
         </>
