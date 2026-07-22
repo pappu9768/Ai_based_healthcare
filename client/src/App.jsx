@@ -6,6 +6,7 @@ import Home from './pages/Home'
   import { ToastContainer } from 'react-toastify';
 import Aichatbot from './pages/Aichatbot'
 import Dashboard from './pages/Dashboard'
+import ChatHistory from './pages/ChatHistory'
 const App = () => {
   return (
     <>
@@ -16,6 +17,7 @@ const App = () => {
         <Route path='/home' element={<Home/>}/>
         <Route path='/chatbot' element={<Aichatbot/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path='/history' element={<ChatHistory/>}/>
       </Routes>
 
       <ToastContainer position='top-right'/>

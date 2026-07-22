@@ -56,7 +56,14 @@ const Dashboard = ({ props }) => {
                         Texts: "AI ChatBot",
                         btnText: "Get Started",
                         onClicked: () => navigate('/chatbot'),
-                        moreInfo: "Get instant health guidance from our AI chatbot. Ask questions about symptoms, medications, healthy habits, and common illnesses anytime, anywhere.s"
+                        moreInfo: "Get instant health guidance from our AI chatbot. Ask questions about symptoms, medications, healthy habits, and common illnesses anytime, anywhere."
+                    }} username={username}/>
+                    <CommonTemplate props={{
+                        Texts: "AI ChatBot History",
+                        btnText: "History",
+                        onClicked: () => navigate('/history'),
+                        moreInfo: "Here is your chat history"
+                       
                     }} />
                 </div>
             </div>

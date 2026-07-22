@@ -7,13 +7,14 @@ import Loading from '../components/Loading.jsx';
 import { useNavigate } from 'react-router-dom';
 import { GiCancel } from "react-icons/gi";
 
-const Aichatbot = () => {
+const Aichatbot = ({username}) => {
 
     const navigate = useNavigate();
 
     const { loading, user } = React.useContext(AuthContext);
     const chatRef = React.useRef(null)
     const [currentMessage, setCurrentMessage] = React.useState("")
+    const [UserName, setUserName] = React.useState('')
     const [messages, setMessages] = React.useState([
         {
             sender: 'ai',
@@ -21,6 +22,17 @@ const Aichatbot = () => {
         }
     ])
     const [sending, setSending] = React.useState(false)
+    React.useEffect(() => {
+        const getname = async () => {
+            try {
+                const result = await getUsernameAndRole();
+
+                setUserName(result.data?.userName)
+            } catch (err) {
+
+            }
+        }
+    })
 
     React.useEffect(() => {
         // console.log(user)
@@ -85,9 +97,9 @@ const Aichatbot = () => {
 
                     {/* Header */}
                     <div className="bg-gradient-to-r from-red-600 to-red-300 text-white px-6 py-5 flex">
-                        <GiCancel className='text-3xl mx-5 my-auto' onClick={() => navigate('/home')}/>
+                        <GiCancel className='text-3xl mx-5 my-auto' onClick={() => navigate('/home')} />
                         <div>
-                            <h2 className="text-2xl font-bold">Welcome, User 👋</h2>
+                            <h2 className="text-2xl font-bold">Welcome, {username} 👋</h2>
                             <p className="text-sm text-blue-100">
                                 Ask anything about your health.
                             </p>

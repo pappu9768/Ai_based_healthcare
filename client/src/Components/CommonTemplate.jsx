@@ -1,7 +1,7 @@
 import React from 'react'
 const CommonTemplate = ({ props }) => {
     return (
-        <div className="w-full max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+        <div className="w-full max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden mt-5">
             <div className="grid grid-cols-1 md:grid-cols-2">
 
                 {/* Left Section */}
