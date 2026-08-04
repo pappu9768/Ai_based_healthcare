@@ -32,8 +32,8 @@ const Navbar = () => {
     }
     return (
         <>
-            <nav className='w-full h-20.5 bg-black flex items-center justify-between'>
-                <div className='text-3xl font-bold text-white ml-6 cursor-pointer flex'>
+            <nav className='fixed z-50 w-full h-20.5 bg-black flex items-center justify-between'>
+                <div className='text-3xl font-bold text-white ml-6 cursor-pointer flex '>
                     <HiMenuAlt1
                         onClick={toggleMenu}
                         className='cursor-pointer md:hidden text-white mr-4 mt-1'
@@ -44,9 +44,9 @@ const Navbar = () => {
 
                 <div className='hidden md:block text-white font-extrabold mr-7'>
                     <ul className='flex items-center justify-center gap-5'>
-                        <li>Home</li>
-                        <li>MyAppointments</li>
-                        <li>About us</li>
+                        <li className='cursor-pointer font-bold text-xl'>Home</li>
+                        <li className='cursor-pointer font-bold text-xl'>MyAppointments</li>
+                        <li className='cursor-pointer font-bold text-xl'>About us</li>
                     </ul>
                 </div>
 
@@ -54,12 +54,12 @@ const Navbar = () => {
                     {
                         role === 'DOCTOR' || role === 'PATIENT' ? (<>
                             <IoIosLogOut className='text-white text-3xl' />
-                            <button className='text-white px-2 py-2 bg-red-600 border rounded hover:bg-red-700' onClick={handleLogout}>
+                            <button className='text-white px-2 py-2 bg-red-600 border rounded hover:bg-red-700 cursor-pointer' onClick={handleLogout}>
                                 logout
                             </button>
                         </>) : (
                             <>
-                                <button onClick={() => <Navigate to='/login' />}>Login</button>
+                                <button onClick={() => <Navigate to='/login' />} className='text-white px-2 py-2 bg-red-600 border rounded hover:bg-red-700 cursor-pointer'>Login</button>
                             </>
                         )
                     }
@@ -67,7 +67,7 @@ const Navbar = () => {
 
             </nav>
 
-            <ResponsiveNavbar showMenu={showMenu} setShowMenu={setShowMenu} />
+            <ResponsiveNavbar showMenu={showMenu} setShowMenu={setShowMenu} role={role} handleLogout={handleLogout}/>
         </>
     )
 }

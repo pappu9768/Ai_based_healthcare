@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import { AuthContext } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import Dashboard from './Dashboard'
+import About from './About'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ const Home = () => {
     <div>
       <Navbar />
       <Dashboard/>
+      <About/>
     </div>
   )
 }

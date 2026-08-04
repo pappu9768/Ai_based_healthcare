@@ -27,7 +27,7 @@ const Dashboard = ({ props }) => {
     return (
         <>
             <div className="w-full py-4 bg-gray-[#95A5AD]">
-                <div className="max-w-7xl mx-auto px-4">
+                <div className="max-w-7xl mx-auto px-4 mt-15">
                     <div className="relative mb-5">
                         <img
                             src={heroImage}
@@ -65,6 +65,17 @@ const Dashboard = ({ props }) => {
                         moreInfo: "Here is your chat history"
                        
                     }} />
+
+                    <CommonTemplate 
+                        props={{
+                            Texts:'Book Appointments',
+                            btnText:'Book',
+                            onClicked: () => navigate('/book'),
+                            moreInfo:'Book appointments with specialist doctors'
+
+                        }}
+                    
+                    />
                 </div>
             </div>
         </>

@@ -13,8 +13,9 @@ const Login = () => {
         password: ''
     })
     const [otpForm, setOtpForm] = React.useState(false)
-    const { login, loading, verifyOtp,setUser } = React.useContext(AuthContext)
+    const { login, loading, verifyOtp, setUser, getUsernameAndRole } = React.useContext(AuthContext)
     const [otps, setOtps] = React.useState("");
+
 
     const handleLoginForm = async (e) => {
         e.preventDefault();
@@ -29,8 +30,17 @@ const Login = () => {
                     toast.success(res.data?.message)
                     const storeToken = res.data?.createToken
                     localStorage.setItem('tokens', storeToken)
-                    setUser(storeToken)
-                    navigate('/home')
+                    setUser(storeToken);
+
+
+                    const resultant = await getUsernameAndRole();
+                    console.log(resultant)
+                    if (resultant.data?.role === 'DOCTOR') {
+                        navigate('/doctorinfo')
+                        toast.warning('Fill this form first')
+                    }else {
+                        navigate('/home')
+                    }
                 } else if (res.data?.requireOtp) {
                     toast.info(res.data?.message)
                     setOtpForm(true)

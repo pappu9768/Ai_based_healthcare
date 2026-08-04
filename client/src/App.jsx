@@ -7,6 +7,8 @@ import Home from './pages/Home'
 import Aichatbot from './pages/Aichatbot'
 import Dashboard from './pages/Dashboard'
 import ChatHistory from './pages/ChatHistory'
+import Book from './pages/Book'
+import DoctorInfo from './pages/DoctorInfo'
 const App = () => {
   return (
     <>
@@ -18,6 +20,8 @@ const App = () => {
         <Route path='/chatbot' element={<Aichatbot/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path='/history' element={<ChatHistory/>}/>
+        <Route path='/book' element={<Book/>}/>
+        <Route path='/doctorinfo' element={<DoctorInfo/>}/>
       </Routes>
 
       <ToastContainer position='top-right'/>

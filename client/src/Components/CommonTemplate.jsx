@@ -10,7 +10,7 @@ const CommonTemplate = ({ props }) => {
                         {props.Texts}
                     </h2>
 
-                    <button className="mt-6 px-6 py-3 bg-white text-red-600 font-semibold rounded-lg hover:bg-gray-100 transition duration-300" onClick={props.onClicked}>
+                    <button className="mt-6 px-6 py-3 bg-white text-red-600 font-semibold rounded-lg hover:bg-gray-100 transition duration-300 cursor-pointer" onClick={props.onClicked}>
                         {props.btnText}
                     </button>
                 </div>
